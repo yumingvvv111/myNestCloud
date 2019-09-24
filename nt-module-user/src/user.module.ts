@@ -35,7 +35,7 @@ import { CryptoUtil } from './utils/crypto.util';
     imports: [
         TypeOrmModule.forRoot({
             type: 'postgres',
-            host: '10.10.10.1',
+            host: 'localhost',
             port: 5432,
             username: 'postgres',
             password: 'cctv7788',
