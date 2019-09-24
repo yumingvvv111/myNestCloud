@@ -1,0 +1,45 @@
+version: '2'
+# networks:
+#  app_net:
+#         driver: bridge
+#         ipam:
+#             config:
+#                 # 子网络
+#                 - subnet: 10.10.0.0/16
+services:
+  # node-user:
+  #     build: ./nt-module-user/
+  #     ports:
+  #     - "50051:50051"
+  #     depends_on:
+  #     - "db"
+  #     # volumes:
+  #     # - "$PWD/nginx.conf:/etc/nginx/conf.d/nginx"
+  #     # - "$PWD/account-system/app/public:/usr/share/nginx/html"
+  #     networks:
+  #     - app_net
+  #     container_name: "node-user"
+  db:
+    image: postgres
+    # networks:
+    #         app_net:
+    #             # 固定子网ip，网段必须在子网络10.10.*.*
+    #             ipv4_address: 10.10.10.1
+    environment:
+     - POSTGRES_DB=module_user
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=cctv7788
+    container_name: db
+    restart: always
+    ports:
+     - "5432:5432"
+    expose:
+     - "5432"
+  adminer:
+    # networks:
+    #   - app_net
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    

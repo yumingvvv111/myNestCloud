@@ -1,0 +1,75 @@
+version: '1'
+networks:
+ app_net:
+        driver: bridge
+        ipam:
+            config:
+                # 子网络
+                - subnet: 10.10.0.0/16
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+     - "8080:80"
+    # depends_on:
+    #  - "security"
+    volumes:
+     - "$PWD/nginx.conf:/etc/nginx/conf.d/nginx"
+     - "$PWD/account-system/app/public:/usr/share/nginx/html"
+    networks:
+     - app_net
+        # 容器名称
+    container_name: "compose-nginx"
+
+
+    
+  security:
+    image: node:8.4-alpine
+    ports:
+    #  - "8080:8080"
+     - "7001:7001"
+    expose:
+     - "7001"
+    #  - "8080"
+    depends_on:
+     - db
+    environment:
+     - DATABASE_HOST=db
+     - NODE_ENV=production
+    volumes:
+     - ./account-system/:/account-system
+    # working_dir: /account-system
+    # command: sh -c "cd /account-system && npm install && npm run dev"
+    command: sh -c "cd /account-system && npm install --production && npm run start"
+    container_name: account-system
+    restart: always
+    networks:
+            - app_net
+  db:
+    image: mysql:5.7
+    networks:
+            app_net:
+                # 固定子网ip，网段必须在子网络10.10.*.*
+                ipv4_address: 10.10.10.1
+    environment:
+     - MYSQL_ROOT_PASSWORD=2019win
+     - MYSQL_DATABASE=accountingsystem
+     - MYSQL_USER=account_rw
+     - MYSQL_PASSWORD=Am@acrw0316
+    container_name: db
+    restart: always
+    ports:
+     - "3306:3306"
+    expose:
+     - "3306"
+    volumes:
+     - ./accountingsystem.sql/:/docker-entrypoint-initdb.d/init.sql
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    # command: [
+    #   "--log-bin=mysql-bin",
+    #   "--character-set-server=utf8mb4",
+    #   "--collation-server=utf8mb4_unicode_ci",
+    #   "--innodb_flush_log_at_trx_commit=1",
+    #   "--sync_binlog=1"
+    #   ]
+    
