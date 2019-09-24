@@ -1,0 +1,47 @@
+{
+  "name": "nt-module-user",
+  "version": "1.0.0",
+  "description": "The user module for Notadd application.",
+  "scripts": {
+    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "start:watch": "nodemon",
+    "debug": "node --inspect-brk -r ts-node/register src/main.ts",
+    "debug:watch": "nodemon --config nodemon-debug.json",
+    "check": "tslint -p tsconfig.json -c tslint.json",
+    "fix": "tslint -p tsconfig.json -c tslint.json --fix",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "author": "notadd",
+  "license": "Apache-2.0",
+  "private": false,
+  "dependencies": {
+    "@grpc/proto-loader": "0.5.0",
+    "@nestjs/common": "6.2.2",
+    "@nestjs/core": "6.2.2",
+    "@nestjs/microservices": "6.2.2",
+    "@nestjs/typeorm": "6.1.1",
+    "bcryptjs": "2.4.3",
+    "grpc": "1.20.3",
+    "i18n": "0.8.3",
+    "jsonwebtoken": "8.4.0",
+    "moment": "2.23.0",
+    "pg": "7.11.0",
+    "reflect-metadata": "0.1.13",
+    "rxjs": "6.5.2",
+    "typeorm": "0.2.17",
+    "typescript": "3.4.5",
+    "snyk": "^1.192.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "2.4.2",
+    "@types/i18n": "0.8.5",
+    "@types/jsonwebtoken": "8.3.0",
+    "@types/node": "10.14.7",
+    "nodemon": "1.18.9",
+    "ts-node": "8.1.0",
+    "tsconfig-paths": "3.8.0",
+    "tslint": "5.16.0"
+  },
+  "snyk": true
+}

@@ -1,0 +1,16 @@
+type Query {
+    """Find all system modules"""
+    findSystemModules(pageNumber: Int, pageSize: Int): SystemModulesResult
+}
+
+type SystemModulesResult {
+    code: Int
+    message: String
+    data: [SystemModuleData]
+    count: Int
+}
+
+type SystemModuleData {
+    id: Int
+    name: String
+}
