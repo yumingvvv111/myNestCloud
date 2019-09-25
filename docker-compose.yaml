@@ -11,14 +11,26 @@ services:
   #     build: ./nt-module-user/
   #     ports:
   #     - "50051:50051"
-  #     depends_on:
-  #     - "db"
-  #     # volumes:
-  #     # - "$PWD/nginx.conf:/etc/nginx/conf.d/nginx"
-  #     # - "$PWD/account-system/app/public:/usr/share/nginx/html"
-  #     networks:
-  #     - app_net
+      # depends_on:
+      # - "db"
+      # volumes:
+      # - "$PWD/nginx.conf:/etc/nginx/conf.d/nginx"
+      # - "$PWD/account-system/app/public:/usr/share/nginx/html"
+      # networks:
+      # - app_net
   #     container_name: "node-user"
+  # node-rpc:
+  #     build: ./nt-rpc-demo/
+  #     ports:
+  #     - "50050:50050"
+      # depends_on:
+      # - "db"
+      # volumes:
+      # - "$PWD/nginx.conf:/etc/nginx/conf.d/nginx"
+      # - "$PWD/account-system/app/public:/usr/share/nginx/html"
+      # networks:
+      # - app_net
+      # container_name: "node-user"
   db:
     image: postgres
     # networks:

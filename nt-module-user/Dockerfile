@@ -9,7 +9,7 @@ RUN apk update && apk add --no-cache --virtual .fetch-deps \
     npm install && \
     apk del .fetch-deps
 
-RUN apk --no-cache add tzdata ca-certificates && \
+# RUN apk --no-cache add tzdata ca-certificates && \
 #cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 WORKDIR /app
