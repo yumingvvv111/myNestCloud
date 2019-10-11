@@ -25,6 +25,13 @@ export class UserResolver implements OnModuleInit {
         return { code, message, data: data.tokenInfo };
     }
 
+    @Query('punch')
+    async punch(@Args() args: { startTime: string, endTime: string }) {
+        const { code, message, data } = await this.userService.getPunchList(args).toPromise();
+        return { code, message, data };
+    }
+
+
     @Query('adminLogin')
     async adminLogin(@Args() args: { username: string, password: string }) {
         const { code, message, data } = await this.userService.login(args).toPromise();
@@ -35,8 +42,15 @@ export class UserResolver implements OnModuleInit {
         return { code, message, data: data.tokenInfo };
     }
 
+    @Mutation('createPunch')
+    async createPunch(@Args() args: { createPunchInput: nt_module_user.CreatePunchRequest.CreatePunchInput }) {
+        console.log(args, 333333);
+        return this.userService.createPunch(args).toPromise();
+    }
+
     @Mutation('register')
     async register(@Args() args: { registerUserInput: nt_module_user.RegisterRequest.RegisterUserInput }) {
+        console.log(args, 55555);
         return this.userService.register(args).toPromise();
     }
 

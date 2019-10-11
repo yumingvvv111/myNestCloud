@@ -73,5 +73,7 @@
 	"The permission has already been added": "权限已经被增加",
 	"The permission has already been deleted": "权限已经被删除",
 	"Can not delete the permission which is not exist in this user's permissions": "无法删除此用户权限中不存在的权限",
-	"Query all users successfully": "查询所有用户信息成功"
+	"Query all users successfully": "查询所有用户信息成功",
+	"Get Success": "Get Success",
+	"Create punch item success": "Create punch item success"
 }

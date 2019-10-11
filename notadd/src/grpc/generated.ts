@@ -1356,6 +1356,20 @@ export namespace nt_module_user {
     export interface UserService {
 
         /**
+         * Calls CreatePunch.
+         * @param {nt_module_user.CreatePunchRequest} request CreatePunchRequest message or plain object
+         * @returns {Observable<nt_module_user.CreatePunchResponse>}
+         */
+        createPunch(request: nt_module_user.CreatePunchRequest): Observable<nt_module_user.CreatePunchResponse>;
+
+        /**
+         * Calls GetPunchList.
+         * @param {nt_module_user.PunchRequest} request PunchRequest message or plain object
+         * @returns {Observable<nt_module_user.PunchResponse>}
+         */
+        getPunchList(request: nt_module_user.PunchRequest): Observable<nt_module_user.PunchResponse>;
+
+        /**
          * Calls Login.
          * @param {nt_module_user.LoginRequest} request LoginRequest message or plain object
          * @returns {Observable<nt_module_user.LoginResponse>}
@@ -1524,6 +1538,101 @@ export namespace nt_module_user {
     }
 
     /**
+     * Constructs a new CreatePunchResponse.
+     * @exports nt_module_user.CreatePunchResponse
+     * @interface
+     */
+    export interface CreatePunchResponse {
+
+        /**
+         * CreatePunchResponse code.
+         * @type {number|undefined}
+         */
+        code?: number;
+
+        /**
+         * CreatePunchResponse message.
+         * @type {string|undefined}
+         */
+        message?: string;
+    }
+
+    /**
+     * Constructs a new PunchRequest.
+     * @exports nt_module_user.PunchRequest
+     * @interface
+     */
+    export interface PunchRequest {
+
+        /**
+         * PunchRequest userId.
+         * @type {string|undefined}
+         */
+        userId?: string;
+
+        /**
+         * PunchRequest endTime.
+         * @type {string|undefined}
+         */
+        endTime?: string;
+    }
+
+    /**
+     * Constructs a new PunchResponse.
+     * @exports nt_module_user.PunchResponse
+     * @interface
+     */
+    export interface PunchResponse {
+
+        /**
+         * PunchResponse code.
+         * @type {number|undefined}
+         */
+        code?: number;
+
+        /**
+         * PunchResponse message.
+         * @type {string|undefined}
+         */
+        message?: string;
+
+        /**
+         * PunchResponse data.
+         * @type {Array.<nt_module_user.PunchResponse.PunchResponseData>|undefined}
+         */
+        data?: nt_module_user.PunchResponse.PunchResponseData[];
+    }
+
+    export namespace PunchResponse {
+
+        /**
+         * Constructs a new PunchResponseData.
+         * @exports nt_module_user.PunchResponse.PunchResponseData
+         * @interface
+         */
+        export interface PunchResponseData {
+
+            /**
+             * PunchResponseData time.
+             * @type {string|undefined}
+             */
+            time?: string;
+
+            /**
+             * PunchResponseData type.
+             * @type {string|undefined}
+             */
+            type?: string;
+
+            /**
+             * PunchResponseData result.
+             * @type {string|undefined}
+             */
+            result?: string;
+        }
+    }
+
+    /**
      * Constructs a new LoginResponse.
      * @exports nt_module_user.LoginResponse
      * @interface
@@ -1644,6 +1753,55 @@ export namespace nt_module_user {
              * @type {Array.<nt_module_user.CreateUserInfoInfoKV>|undefined}
              */
             infoKVs?: nt_module_user.CreateUserInfoInfoKV[];
+        }
+    }
+
+    /**
+     * Constructs a new CreatePunchRequest.
+     * @exports nt_module_user.CreatePunchRequest
+     * @interface
+     */
+    export interface CreatePunchRequest {
+
+        /**
+         * CreatePunchRequest createPunchInput.
+         * @type {nt_module_user.CreatePunchRequest.CreatePunchInput|undefined}
+         */
+        createPunchInput?: nt_module_user.CreatePunchRequest.CreatePunchInput;
+    }
+
+    export namespace CreatePunchRequest {
+
+        /**
+         * Constructs a new CreatePunchInput.
+         * @exports nt_module_user.CreatePunchRequest.CreatePunchInput
+         * @interface
+         */
+        export interface CreatePunchInput {
+
+            /**
+             * CreatePunchInput userId.
+             * @type {string|undefined}
+             */
+            userId?: string;
+
+            /**
+             * CreatePunchInput time.
+             * @type {string|undefined}
+             */
+            time?: string;
+
+            /**
+             * CreatePunchInput type.
+             * @type {string|undefined}
+             */
+            type?: string;
+
+            /**
+             * CreatePunchInput result.
+             * @type {string|undefined}
+             */
+            result?: string;
         }
     }
 

@@ -20,6 +20,7 @@ import { Role } from './entities/role.entity';
 import { SystemModule } from './entities/system-module.entity';
 import { UserInfo } from './entities/user-info.entity';
 import { User } from './entities/user.entity';
+import { Punch } from './entities/punch.entity';
 import { AuthService } from './services/auth.service';
 import { EntityCheckService } from './services/entity-check.service';
 import { InfoGroupService } from './services/info-group.service';
@@ -35,8 +36,8 @@ import { CryptoUtil } from './utils/crypto.util';
     imports: [
         TypeOrmModule.forRoot({
             type: 'postgres',
-            // host: 'localhost',
-            host: '39.97.224.231',
+            host: 'localhost',
+            // host: '39.97.224.231',
             port: 5432,
             username: 'postgres',
             password: 'cctv7788',
@@ -47,7 +48,7 @@ import { CryptoUtil } from './utils/crypto.util';
             synchronize: true,
             dropSchema: false
         }),
-        TypeOrmModule.forFeature([Organization, User, Role, SystemModule, Resource, Permission, PersonalPermission, InfoGroup, InfoItem, UserInfo])
+        TypeOrmModule.forFeature([Organization, User, Role, SystemModule, Resource, Permission, PersonalPermission, InfoGroup, InfoItem, UserInfo, Punch])
     ],
     controllers: [
         InfoGroupGrpcController,

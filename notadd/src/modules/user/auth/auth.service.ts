@@ -25,7 +25,9 @@ export class AuthService implements OnModuleInit {
         /**
          * whitelist
          */
-        if (req.body && (['IntrospectionQuery', 'sayHello', 'login', 'adminLogin', 'register'].some(item => req.body.query.includes(item)))) {
+
+         //fixme
+        if (req.body && (['IntrospectionQuery', 'sayHello', 'login', 'adminLogin', 'register', 'punch', 'createPunch'].some(item => req.body.query.includes(item)))) {
             return;
         }
 

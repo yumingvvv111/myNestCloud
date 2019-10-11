@@ -9,7 +9,8 @@ async function bootstrap() {
     logger.log(APP_CONFIG.banner);
 
     const app = await NestFactory.create(AppModule);
-
+    
+    app.enableCors();
     await app.listen(5001, '0.0.0.0', () => {
         logger.log('Notadd GraphQL IDE Server started on: http://localhost:5001/graphql');
     });

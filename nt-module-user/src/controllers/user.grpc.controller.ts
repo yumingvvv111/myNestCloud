@@ -2,7 +2,7 @@ import { Controller, Inject } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { __ as t } from 'i18n';
 
-import { CreateUserInput, UpdateUserInput, UserInfoData } from '../interfaces/user.interface';
+import { CreateUserInput, UpdateUserInput, UserInfoData, CreatePunchRequestInput } from '../interfaces/user.interface';
 import { UserService } from '../services/user.service';
 
 @Controller()
@@ -13,14 +13,28 @@ export class UserGrpcController {
 
     @GrpcMethod('UserService')
     async login(payload: { username: string, password: string }) {
-        const data = await this.    userService.login(payload.username, payload.password);
+        const data = await this.userService.login(payload.username, payload.password);
         return { code: 200, message: t('Login success'), data };
     }
 
     @GrpcMethod('UserService')
+    async getPunchList(payload: { startTime: string, endTime: string }) {
+        const data = await this.userService.getPunchList(payload.startTime, payload.endTime);
+        return { code: 200, message: t('Get Success'), data:[] };
+    }
+
+    @GrpcMethod('UserService')
     async register(payload: { registerUserInput: CreateUserInput }) {
+        console.log(5555555, payload);
         const result = await this.userService.register(payload.registerUserInput);
         return { code: 200, message: t('Registration success') };
+    }
+
+    @GrpcMethod('UserService')
+    async createPunch(payload: { createPunchInput: CreatePunchRequestInput }) {
+        console.log(111111111111, payload);
+        const result = await this.userService.createPunch(payload.createPunchInput);
+        return { code: 200, message: t('Create punch item success') };
     }
 
     @GrpcMethod('UserService')

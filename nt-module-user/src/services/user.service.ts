@@ -9,12 +9,14 @@ import { Permission } from '../entities/permission.entity';
 import { PersonalPermission } from '../entities/personal-permission.entity';
 import { UserInfo } from '../entities/user-info.entity';
 import { User } from '../entities/user.entity';
+import { Punch } from '../entities/punch.entity';
 import {
     CreateUserInfoKVs,
     CreateUserInput,
     UpdateUserInfoKVs,
     UpdateUserInput,
-    UserInfoData
+    UserInfoData,
+    CreatePunchRequestInput
 } from '../interfaces/user.interface';
 import { CryptoUtil } from '../utils/crypto.util';
 import { AuthService } from './auth.service';
@@ -24,6 +26,7 @@ import { RoleService } from './role.service';
 export class UserService {
     constructor(
         @InjectRepository(User) private readonly userRepo: Repository<User>,
+        @InjectRepository(Punch) private readonly punchRepo: Repository<Punch>,
         @InjectRepository(Permission) private readonly permissionRepo: Repository<Permission>,
         @InjectRepository(PersonalPermission) private readonly personalPermissionRepo: Repository<PersonalPermission>,
         @InjectRepository(UserInfo) private readonly userInfoRepo: Repository<UserInfo>,
@@ -66,6 +69,28 @@ export class UserService {
         if (createUserInput.infoKVs && createUserInput.infoKVs.length) {
             await this.createOrUpdateUserInfos(user, createUserInput.infoKVs, 'create');
         }
+    }
+
+    /**
+     * Cteate a punch recorder
+     *
+     * @param record The object of recorder for time
+     */
+    async createPunchRecorder(createPunchRequestInput: CreatePunchRequestInput): Promise<void> {
+        console.log(createPunchRequestInput, 222222);
+        if (!createPunchRequestInput.time) {
+            throw new RpcException({ code: 406, message: t('Please make sure have a correct param') });
+        }
+        // if (createUserInput.username && await this.userRepo.findOne({ where: { username: createUserInput.username } })) {
+        //     throw new RpcException({ code: 409, message: t('Username already exists') });
+        // }
+        
+        // if (createUserInput.password) {
+        //     createUserInput.password = await this.cryptoUtil.encryptPassword(createUserInput.password);
+        // }
+
+        // const punch = await this.punchRepo.save(this.punchRepo.create(createPunchRequestInput));
+
     }
 
     /**
@@ -203,6 +228,14 @@ export class UserService {
         if (updateUserInput.infoKVs && updateUserInput.infoKVs.length) {
             await this.createOrUpdateUserInfos(user, updateUserInput.infoKVs, 'update');
         }
+    }
+
+    async getPunchList(startTime: string, endTime: string){
+        return [{
+            time: '1',
+            type: '1',
+            result: '1'
+        }];
     }
 
     /**
@@ -381,6 +414,15 @@ export class UserService {
     async register(createUserInput: CreateUserInput): Promise<void> {
         createUserInput.roleIds = [1];
         await this.createUser(createUserInput);
+    }
+
+    /**
+     * Ordinary user registration
+     *
+     * @param createUserInput createUserInput
+     */
+    async createPunch(createPunchRequestInput: CreatePunchRequestInput): Promise<void> {
+        await this.createPunchRecorder(createPunchRequestInput);
     }
 
     /**

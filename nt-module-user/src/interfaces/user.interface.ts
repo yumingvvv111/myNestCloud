@@ -39,6 +39,13 @@ export interface CreateUserInput {
     organizationIds?: number[];
 }
 
+export interface CreatePunchRequestInput {
+    userId?: string;
+    time?: string;
+    type?: string;
+    result?: string;
+}
+
 export interface UpdateUserInput {
     username?: string;
     email?: string;

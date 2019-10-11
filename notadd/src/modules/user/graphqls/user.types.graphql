@@ -1,6 +1,8 @@
 type Query {
     """Ordinary user login"""
     login(username: String!, password: String!): LoginResponse
+    """Ordinary user punch"""
+    punch(startTime: String!, endTime: String!): PunchResponse
     """Admin login"""
     adminLogin(username: String!, password: String!): LoginResponse
     """Query the information items required for ordinary users to register"""
@@ -20,6 +22,8 @@ type Query {
 type Mutation {
     """Ordinary user registration"""
     register(registerUserInput: RegisterUserInput): UserModuleCommonResult
+    """Create punch"""
+    createPunch(createPunchInput: CreatePunchInput): UserModuleCommonResult
     """Create user"""
     createUser(createUserInput: CreateUserInput): UserModuleCommonResult
     """Add a role to the user"""
@@ -53,6 +57,13 @@ input RegisterUserInput {
     password: String!
     """Information item key-value pair, key is the ID of the information item (infoItem.id), and the value is the value of the information item (userInfo.value)"""
     infoKVs: [RegisterOrCreateInfoKV]
+}
+
+input CreatePunchInput{
+    userId: String
+    time: String
+    type: String
+    result: String
 }
 
 input CreateUserInput {
@@ -116,6 +127,18 @@ type LoginResponse {
     code: Int
     message: String
     data: AccessToken
+}
+
+type PunchResponse {
+    code: Int
+    message: String
+    data: [PunchList]
+}
+
+type PunchList{
+    time: String
+    type: String
+    result: String
 }
 
 type AccessToken {

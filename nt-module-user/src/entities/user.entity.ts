@@ -14,6 +14,7 @@ import { Organization } from './organization.entity';
 import { PersonalPermission } from './personal-permission.entity';
 import { Role } from './role.entity';
 import { UserInfo } from './user-info.entity';
+import { Punch } from './punch.entity';
 
 @Entity('user')
 export class User {
@@ -43,6 +44,9 @@ export class User {
 
     @OneToMany(type => UserInfo, userInfo => userInfo.user)
     userInfos: UserInfo[];
+
+    @OneToMany(type => Punch, punch => punch.user)
+    punchList: UserInfo[];
 
     @Column({
         default: false

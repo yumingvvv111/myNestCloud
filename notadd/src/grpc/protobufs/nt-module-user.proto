@@ -254,6 +254,8 @@ message OneRoleInfoData {
 }
 
 service UserService {
+  rpc CreatePunch(CreatePunchRequest) returns (CreatePunchResponse) {}
+  rpc GetPunchList(PunchRequest) returns (PunchResponse) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc Register(RegisterRequest) returns (StringDataResponse) {}
   rpc CreateUser(CreateUserRequest) returns (StringDataResponse) {}
@@ -282,6 +284,29 @@ message LoginRequest {
   string password = 2;
 }
 
+
+message CreatePunchResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message PunchRequest {
+  string userId = 1;
+  string endTime = 2;
+}
+
+
+message PunchResponse {
+  int32 code = 1;
+  string message = 2;
+  repeated PunchResponseData data = 3;
+  message PunchResponseData {
+    string time = 1;
+    string type = 2;
+    string result = 3;
+  }
+}
+
 message LoginResponse {
   int32 code = 1;
   string message = 2;
@@ -304,6 +329,16 @@ message RegisterRequest {
     string mobile = 3;
     string password = 4;
     repeated CreateUserInfoInfoKV infoKVs = 5;
+  }
+}
+
+message CreatePunchRequest {
+  CreatePunchInput createPunchInput = 1;
+  message CreatePunchInput {
+    string userId = 1;
+    string time = 2;
+    string type = 3;
+    string result = 4;
   }
 }
 
