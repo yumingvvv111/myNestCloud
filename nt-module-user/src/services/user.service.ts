@@ -71,6 +71,9 @@ export class UserService {
         }
     }
 
+
+    
+
     /**
      * Cteate a punch recorder
      *
@@ -88,8 +91,13 @@ export class UserService {
         // if (createUserInput.password) {
         //     createUserInput.password = await this.cryptoUtil.encryptPassword(createUserInput.password);
         // }
+        const user = await this.userRepo.findOne(createPunchRequestInput.userId);
 
-        // const punch = await this.punchRepo.save(this.punchRepo.create(createPunchRequestInput));
+        const {type, time, result} = createPunchRequestInput;
+        
+        const punch = await this.punchRepo.save(this.punchRepo.create({user, type, time, result}));
+
+
 
     }
 
@@ -230,12 +238,33 @@ export class UserService {
         }
     }
 
-    async getPunchList(startTime: string, endTime: string){
-        return [{
-            time: '1',
-            type: '1',
-            result: '1'
-        }];
+    /**
+     * Get punch list
+     * @param userId which user
+     * @param startTime start of time range
+     * @param endTime end of time range
+     */
+
+    async getPunchList(userId: string, startTime: string, endTime: string){
+
+        console.log('get punch list');
+
+        const _userId: number = Number(userId) || 0;
+
+        //todo
+
+        if (!startTime) {
+            throw new RpcException({ code: 406, message: t('Please make sure have a correct param') });
+        }
+
+        const punchs = await this.userRepo.findOne(userId, {relations: ['punchList']});
+        
+        // const punch = await this.punchRepo.save(this.punchRepo.create({user, type, time, result}));
+
+        console.log(111111111, punchs);
+
+        return punchs.punchList || [];
+        
     }
 
     /**

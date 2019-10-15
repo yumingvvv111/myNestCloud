@@ -17,7 +17,10 @@ export class GraphQLConfigService implements GqlOptionsFactory {
             resolvers: { JSON: GraphQLJSON},
             context: async ({ req }) => {
                 const user = await this.authService.validateUser(req);
-                return { req, user: {username: 'sadmin'} };
+                // console.log('useruseruser', user);
+                //fixme
+                // return { req, user: {username: 'sadmin'} };
+                return { req, user };
             }
         };
     }

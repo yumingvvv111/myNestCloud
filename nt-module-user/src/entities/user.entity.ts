@@ -46,7 +46,7 @@ export class User {
     userInfos: UserInfo[];
 
     @OneToMany(type => Punch, punch => punch.user)
-    punchList: UserInfo[];
+    punchList: Punch[];
 
     @Column({
         default: false

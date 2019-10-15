@@ -26,7 +26,8 @@ export class UserResolver implements OnModuleInit {
     }
 
     @Query('punch')
-    async punch(@Args() args: { startTime: string, endTime: string }) {
+    async punch(@Args() args: { userId: '0', startTime: string, endTime: string }, @Context() ctx:any) {
+        args.userId = ctx.user.id;
         const { code, message, data } = await this.userService.getPunchList(args).toPromise();
         return { code, message, data };
     }
@@ -43,8 +44,8 @@ export class UserResolver implements OnModuleInit {
     }
 
     @Mutation('createPunch')
-    async createPunch(@Args() args: { createPunchInput: nt_module_user.CreatePunchRequest.CreatePunchInput }) {
-        console.log(args, 333333);
+    async createPunch(@Args() args: { createPunchInput: nt_module_user.CreatePunchRequest.CreatePunchInput }, @Context() ctx:any) {
+        args.createPunchInput.userId = ctx.user.id;
         return this.userService.createPunch(args).toPromise();
     }
 

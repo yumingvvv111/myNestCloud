@@ -1571,6 +1571,12 @@ export namespace nt_module_user {
         userId?: string;
 
         /**
+         * PunchRequest startTime.
+         * @type {string|undefined}
+         */
+        startTime?: string;
+
+        /**
          * PunchRequest endTime.
          * @type {string|undefined}
          */

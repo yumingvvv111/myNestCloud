@@ -27,13 +27,18 @@ export class AuthService implements OnModuleInit {
          */
 
          //fixme
-        if (req.body && (['IntrospectionQuery', 'sayHello', 'login', 'adminLogin', 'register', 'punch', 'createPunch'].some(item => req.body.query.includes(item)))) {
+        if (req.body && (['IntrospectionQuery', 'sayHello', 'login', 'adminLogin', 'register'].some(item => req.body.query.includes(item)))) {
             return;
         }
 
         let token = req.headers.authorization as string;
+
         if (!token) {
-            throw new AuthenticationError(t('Request header lacks authorization parameters，it should be: Authorization'));
+            // if(req.body.accessToken){
+            //     token = req.body.accessToken;
+            // }else{
+                throw new AuthenticationError(t('Request header lacks authorization parameters，it should be: Authorization'));
+            // }
         }
 
         if (token.slice(0, 6) === 'Bearer') {

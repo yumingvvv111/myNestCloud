@@ -18,9 +18,9 @@ export class UserGrpcController {
     }
 
     @GrpcMethod('UserService')
-    async getPunchList(payload: { startTime: string, endTime: string }) {
-        const data = await this.userService.getPunchList(payload.startTime, payload.endTime);
-        return { code: 200, message: t('Get Success'), data:[] };
+    async getPunchList(payload: { userId: string,  startTime: string, endTime: string }) {
+        const data = await this.userService.getPunchList(payload.userId, payload.startTime, payload.endTime, );
+        return { code: 200, message: t('Get Success'), data };
     }
 
     @GrpcMethod('UserService')
@@ -31,6 +31,7 @@ export class UserGrpcController {
     }
 
     @GrpcMethod('UserService')
+    //todo permission
     async createPunch(payload: { createPunchInput: CreatePunchRequestInput }) {
         console.log(111111111111, payload);
         const result = await this.userService.createPunch(payload.createPunchInput);

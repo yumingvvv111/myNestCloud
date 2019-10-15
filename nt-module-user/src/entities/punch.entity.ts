@@ -18,7 +18,7 @@ export class Punch {
     @ManyToOne(type => User, user => user.punchList, {
         onDelete: 'CASCADE'
     })
-    user: string;
+    user: User;
     
     @Column({
         nullable: true
