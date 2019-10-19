@@ -1,4 +1,6 @@
 type Query {
+    """Ordinary user faceLogin"""
+    faceLogin(img: String!): LoginResponse2
     """Ordinary user login"""
     login(username: String!, password: String!): LoginResponse
     """Ordinary user punch"""
@@ -128,6 +130,25 @@ type LoginResponse {
     message: String
     data: AccessToken
 }
+
+type LoginResponse2{
+    code: Int
+    message: String
+    data: LoginResData
+}
+
+type LoginResData{
+    tokenInfo: TokenInfo
+    userInfoData: UserInfoData
+}
+
+type TokenInfo {
+    accessToken: String
+    expiresIn: Int
+}
+
+
+
 
 type PunchResponse {
     code: Int

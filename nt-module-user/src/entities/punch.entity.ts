@@ -35,17 +35,17 @@ export class Punch {
     })
     result: string;
 
-//     @CreateDateColumn({
-//         transformer: {
-//             from: (date: Date) => {
-//                 return moment(date).format('YYYY-MM-DD HH:mm:ss');
-//             },
-//             to: () => {
-//                 return new Date();
-//             }
-//         }
-//     })
-//     createdAt: string;
+    @CreateDateColumn({
+        transformer: {
+            from: (date: Date) => {
+                return moment(date).format('YYYY-MM-DD HH:mm:ss');
+            },
+            to: (value) => {
+                return new Date();
+            }
+        }
+    })
+    createdAt: string;
 
 //     @UpdateDateColumn({
 //         transformer: {

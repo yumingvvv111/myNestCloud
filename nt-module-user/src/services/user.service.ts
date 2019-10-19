@@ -72,7 +72,7 @@ export class UserService {
     }
 
 
-    
+
 
     /**
      * Cteate a punch recorder
@@ -87,15 +87,15 @@ export class UserService {
         // if (createUserInput.username && await this.userRepo.findOne({ where: { username: createUserInput.username } })) {
         //     throw new RpcException({ code: 409, message: t('Username already exists') });
         // }
-        
+
         // if (createUserInput.password) {
         //     createUserInput.password = await this.cryptoUtil.encryptPassword(createUserInput.password);
         // }
         const user = await this.userRepo.findOne(createPunchRequestInput.userId);
 
-        const {type, time, result} = createPunchRequestInput;
-        
-        const punch = await this.punchRepo.save(this.punchRepo.create({user, type, time, result}));
+        const { type, time, result } = createPunchRequestInput;
+
+        const punch = await this.punchRepo.save(this.punchRepo.create({ user, type, time, result }));
 
 
 
@@ -245,26 +245,32 @@ export class UserService {
      * @param endTime end of time range
      */
 
-    async getPunchList(userId: string, startTime: string, endTime: string){
+    async getPunchList(userId: string, startTime: string, endTime: string) {
 
         console.log('get punch list');
-
-        const _userId: number = Number(userId) || 0;
-
-        //todo
-
         if (!startTime) {
             throw new RpcException({ code: 406, message: t('Please make sure have a correct param') });
         }
 
-        const punchs = await this.userRepo.findOne(userId, {relations: ['punchList']});
-        
-        // const punch = await this.punchRepo.save(this.punchRepo.create({user, type, time, result}));
+        let reg = /\d{4}-\d{2}-\d{2}/;
+        let _startTime = (new Date(0)).toISOString();
+        let _endTime = (new Date()).toISOString();
 
-        console.log(111111111, punchs);
+        let _startTime2 = (new Date(startTime)).toISOString();
+        let _endTime2 = (new Date(endTime)).toISOString();
 
-        return punchs.punchList || [];
+        let startTime3 = reg.test(_startTime2) ? _startTime2 : _startTime;
+        let endTime3 = reg.test(_endTime2) ? _endTime2 : _endTime;
         
+        if(startTime3 === endTime3){
+            endTime3 = (new Date((new Date(endTime3)).getTime() + 24 * 60 * 60 * 1000)).toISOString();
+        }
+
+        const punchs = await this.userRepo.createQueryBuilder("user")
+        .innerJoinAndSelect('user.punchList', 'punchList')
+        .where(`punchList.createdAt Between '${startTime3}' AND '${endTime3}'`)
+        .getMany();
+        return (punchs[0] && punchs[0].punchList) || [];
     }
 
     /**

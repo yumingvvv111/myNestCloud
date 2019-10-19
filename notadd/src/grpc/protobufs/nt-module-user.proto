@@ -256,6 +256,7 @@ message OneRoleInfoData {
 service UserService {
   rpc CreatePunch(CreatePunchRequest) returns (CreatePunchResponse) {}
   rpc GetPunchList(PunchRequest) returns (PunchResponse) {}
+  rpc FaceLogin(FaceLoginRequest) returns (LoginResponse) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc Register(RegisterRequest) returns (StringDataResponse) {}
   rpc CreateUser(CreateUserRequest) returns (StringDataResponse) {}
@@ -277,6 +278,10 @@ service UserService {
   rpc FindOneWithRolesAndPermissions(FindOneWithRolesAndPermissionsRequest) returns (FindOneWithRolesAndPermissionsResponse) {}
   rpc AddPermissionToUser(AddOrDeleteUserPermRequest) returns (StringDataResponse) {}
   rpc DeletePermissionOfUser(AddOrDeleteUserPermRequest) returns (StringDataResponse) {}
+}
+
+message FaceLoginRequest {
+  string img = 1;
 }
 
 message LoginRequest {

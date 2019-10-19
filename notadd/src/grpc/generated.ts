@@ -1370,6 +1370,13 @@ export namespace nt_module_user {
         getPunchList(request: nt_module_user.PunchRequest): Observable<nt_module_user.PunchResponse>;
 
         /**
+         * Calls FaceLogin.
+         * @param {nt_module_user.FaceLoginRequest} request FaceLoginRequest message or plain object
+         * @returns {Observable<nt_module_user.LoginResponse>}
+         */
+        faceLogin(request: nt_module_user.FaceLoginRequest): Observable<nt_module_user.LoginResponse>;
+
+        /**
          * Calls Login.
          * @param {nt_module_user.LoginRequest} request LoginRequest message or plain object
          * @returns {Observable<nt_module_user.LoginResponse>}
@@ -1515,6 +1522,20 @@ export namespace nt_module_user {
          * @returns {Observable<nt_module_user.StringDataResponse>}
          */
         deletePermissionOfUser(request: nt_module_user.AddOrDeleteUserPermRequest): Observable<nt_module_user.StringDataResponse>;
+    }
+
+    /**
+     * Constructs a new FaceLoginRequest.
+     * @exports nt_module_user.FaceLoginRequest
+     * @interface
+     */
+    export interface FaceLoginRequest {
+
+        /**
+         * FaceLoginRequest img.
+         * @type {string|undefined}
+         */
+        img?: string;
     }
 
     /**
