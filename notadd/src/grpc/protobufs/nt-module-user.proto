@@ -254,6 +254,7 @@ message OneRoleInfoData {
 }
 
 service UserService {
+  rpc FaceRegister(FaceRegisterRequest) returns (FaceRegisterResponse) {}
   rpc CreatePunch(CreatePunchRequest) returns (CreatePunchResponse) {}
   rpc GetPunchList(PunchRequest) returns (PunchResponse) {}
   rpc FaceLogin(FaceLoginRequest) returns (LoginResponse) {}
@@ -313,6 +314,17 @@ message PunchResponse {
   }
 }
 
+message FaceRegisterResponse {
+  int32 code = 1;
+  string message = 2;
+  FaceRegisterResData data = 3;
+  message FaceRegisterResData {
+    string status = 1;
+    TokenInfo tokenInfo = 2;
+    UserData userInfoData = 3;
+  }
+}
+
 message LoginResponse {
   int32 code = 1;
   string message = 2;
@@ -321,10 +333,11 @@ message LoginResponse {
     TokenInfo tokenInfo = 1;
     UserData userInfoData = 2;
   }
-  message TokenInfo {
-    string accessToken = 1;
-    int32 expiresIn = 2;
-  }
+}
+
+message TokenInfo {
+  string accessToken = 1;
+  int32 expiresIn = 2;
 }
 
 message RegisterRequest {
@@ -336,6 +349,13 @@ message RegisterRequest {
     string password = 4;
     repeated CreateUserInfoInfoKV infoKVs = 5;
   }
+}
+
+
+message FaceRegisterRequest{
+    string img = 1;
+    string name = 2;
+    string password = 3;
 }
 
 message CreatePunchRequest {

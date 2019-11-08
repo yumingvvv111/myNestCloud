@@ -20,26 +20,11 @@ export class UserResolver implements OnModuleInit {
     private userService: nt_module_user.UserService;
 
     @Query('faceLogin')
-    async faceLogin(@Args() args: { img: String }) {
-        // const { code, message, data } = await this.userService.faceLogin(args).toPromise();
+    async faceLogin(@Args() args: { img: string }) {
+        const { code, message, data } = await this.userService.faceLogin(args).toPromise();
         // console.log(args.img, 111111111);
         //fixme
-        return { code: 200, message: 'success', data: { tokenInfo:
-            { accessToken:
-               'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbk5hbWUiOiJhOCIsImlhdCI6MTU3MTM2NzM5OCwiZXhwIjoxNTcxNjI2NTk4fQ.1E9f_v8UINxyf6bJcttHTA4mZMkga6G2Y3mUOSBlBTw',
-              expiresIn: 259200 },
-           userInfoData:
-            { 
-              userOrganizations: [],
-              userInfos: [],
-              userId: 9,//fixme
-              username: 'a8',
-              email: '8@qq.com',
-              mobile: '133108',
-              banned: false,
-              recycle: false,
-              createdAt: '2019-09-18 11:11:57',
-              updatedAt: '2019-09-18 11:11:57' } } };
+        return {code, message, data};
     }
 
     @Query('login')
@@ -72,9 +57,14 @@ export class UserResolver implements OnModuleInit {
         return this.userService.createPunch(args).toPromise();
     }
 
+
+    @Mutation('faceRegister')
+    async faceRegister(@Args() args: nt_module_user.FaceRegisterRequest) {
+        return this.userService.faceRegister(args).toPromise();
+    }
+
     @Mutation('register')
     async register(@Args() args: { registerUserInput: nt_module_user.RegisterRequest.RegisterUserInput }) {
-        console.log(args, 55555);
         return this.userService.register(args).toPromise();
     }
 

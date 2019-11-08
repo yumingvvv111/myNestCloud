@@ -1,4 +1,4 @@
-import { DynamicModule, Inject, Module, OnModuleInit } from '@nestjs/common';
+import { DynamicModule, Inject, Module, OnModuleInit, HttpModule } from '@nestjs/common';
 import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
 import { configure as i18nConfigure } from 'i18n';
 import { Repository } from 'typeorm';
@@ -34,6 +34,12 @@ import { CryptoUtil } from './utils/crypto.util';
 
 @Module({
     imports: [
+        HttpModule.registerAsync({
+            useFactory: () => ({
+              timeout: 30000,
+              maxRedirects: 5,
+            }),
+          }),
         TypeOrmModule.forRoot({
             type: 'postgres',
             host: 'localhost',

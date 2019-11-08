@@ -28,6 +28,12 @@ export interface UserInfoData {
     }[];
 }
 
+export interface FaceRegisterInput {
+    img?: string;
+    name?: string;
+    password?: string;
+}
+
 export interface CreateUserInput {
     username?: string;
     email?: string;

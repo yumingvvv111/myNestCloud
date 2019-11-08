@@ -27,7 +27,7 @@ export class AuthService implements OnModuleInit {
          */
 
          //fixme
-        if (req.body && (['IntrospectionQuery', 'sayHello', 'login', 'adminLogin', 'faceLogin', 'register'].some(item => req.body.query.includes(item)))) {
+        if (req.body && (['IntrospectionQuery', 'sayHello', 'login', 'adminLogin', 'faceLogin', 'register', 'faceRegister'].some(item => req.body.query.includes(item)))) {
             return;
         }
 

@@ -75,5 +75,8 @@
 	"Can not delete the permission which is not exist in this user's permissions": "无法删除此用户权限中不存在的权限",
 	"Query all users successfully": "查询所有用户信息成功",
 	"Get Success": "获取成功",
-	"Create punch item success": "打卡成功"
+	"Create punch item success": "打卡成功",
+	"Familiar with the other face": "Familiar with the other face",
+	"Please type in user name": "Please type in user name",
+	"Add face success": "Add face success"
 }

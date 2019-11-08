@@ -1356,6 +1356,13 @@ export namespace nt_module_user {
     export interface UserService {
 
         /**
+         * Calls FaceRegister.
+         * @param {nt_module_user.FaceRegisterRequest} request FaceRegisterRequest message or plain object
+         * @returns {Observable<nt_module_user.LoginResponse>}
+         */
+        faceRegister(request: nt_module_user.FaceRegisterRequest): Observable<nt_module_user.LoginResponse>;
+
+        /**
          * Calls CreatePunch.
          * @param {nt_module_user.CreatePunchRequest} request CreatePunchRequest message or plain object
          * @returns {Observable<nt_module_user.CreatePunchResponse>}
@@ -1781,6 +1788,32 @@ export namespace nt_module_user {
              */
             infoKVs?: nt_module_user.CreateUserInfoInfoKV[];
         }
+    }
+
+    /**
+     * Constructs a new FaceRegisterRequest.
+     * @exports nt_module_user.FaceRegisterRequest
+     * @interface
+     */
+    export interface FaceRegisterRequest {
+
+        /**
+         * FaceRegisterRequest img.
+         * @type {string|undefined}
+         */
+        img?: string;
+
+        /**
+         * FaceRegisterRequest name.
+         * @type {string|undefined}
+         */
+        name?: string;
+
+        /**
+         * FaceRegisterRequest password.
+         * @type {string|undefined}
+         */
+        password?: string;
     }
 
     /**

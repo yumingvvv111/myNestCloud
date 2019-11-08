@@ -32,7 +32,7 @@ services:
       # - app_net
       # container_name: "node-user"
   db:
-    image: postgres
+    image: postgres-11
     # networks:
     #         app_net:
     #             # 固定子网ip，网段必须在子网络10.10.*.*

@@ -22,6 +22,8 @@ type Query {
 }
 
 type Mutation {
+     """Ordinary user face register"""
+    faceRegister(img: String!, name: String, password: String): FaceRegisterResponse
     """Ordinary user registration"""
     register(registerUserInput: RegisterUserInput): UserModuleCommonResult
     """Create punch"""
@@ -135,6 +137,18 @@ type LoginResponse2{
     code: Int
     message: String
     data: LoginResData
+}
+
+type FaceRegisterResponse{
+    code: Int
+    message: String
+    data: FaceRegisterResData
+}
+
+type FaceRegisterResData{
+    status: String
+    tokenInfo: TokenInfo
+    userInfoData: UserInfoData
 }
 
 type LoginResData{

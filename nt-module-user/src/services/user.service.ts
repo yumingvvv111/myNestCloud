@@ -1,6 +1,7 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, HttpService } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
+import { map, filter, scan } from 'rxjs/operators';
 import { __ as t } from 'i18n';
 import { Repository } from 'typeorm';
 
@@ -34,6 +35,7 @@ export class UserService {
         @Inject(CryptoUtil) private readonly cryptoUtil: CryptoUtil,
         @Inject(forwardRef(() => AuthService)) private readonly authService: AuthService,
         @Inject(RoleService) private readonly roleService: RoleService,
+        @Inject(HttpService) private readonly httpService: HttpService,
     ) { }
 
     /**
@@ -261,15 +263,15 @@ export class UserService {
 
         let startTime3 = reg.test(_startTime2) ? _startTime2 : _startTime;
         let endTime3 = reg.test(_endTime2) ? _endTime2 : _endTime;
-        
-        if(startTime3 === endTime3){
+
+        if (startTime3 === endTime3) {
             endTime3 = (new Date((new Date(endTime3)).getTime() + 24 * 60 * 60 * 1000)).toISOString();
         }
 
         const punchs = await this.userRepo.createQueryBuilder("user")
-        .innerJoinAndSelect('user.punchList', 'punchList')
-        .where(`punchList.createdAt Between '${startTime3}' AND '${endTime3}'`)
-        .getMany();
+            .innerJoinAndSelect('user.punchList', 'punchList')
+            .where(`punchList.createdAt Between '${startTime3}' AND '${endTime3}'`)
+            .getMany();
         return (punchs[0] && punchs[0].punchList) || [];
     }
 
@@ -403,6 +405,105 @@ export class UserService {
         return this.roleService.findInfoGroupItemsByIds(roleIds);
     }
 
+
+    /**
+     * Add a user with face img
+     * @param img the image from APP client
+     * @param name user name
+    */
+
+   async addAIFaceUser(img: string, name: string):Promise<any> {
+
+    let imgStr = img.replace(/^.*?,/, '');
+    let paramData = {
+        base64_11: imgStr,
+        user_name: name
+    };
+    let param = JSON.stringify(paramData);
+    
+    return new Promise((resolve) => {
+        this.httpService.post('http://localhost:5002/api/add_face',
+        {data:param},
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).pipe(map((res) => {
+            return res.data.results;
+        })).subscribe( res => {
+            let val = res[0];
+            resolve(val);
+        });
+    }); 
+}
+
+
+    /**
+     * get user name from AI api
+     * @param img the image from APP client
+    */
+
+    async getUsernameByAI(img: string):Promise<any> {
+        const param = img.replace(/^.*?,/, '');
+        console.log(param);
+        return new Promise((resolve) => {
+            this.httpService.post('http://localhost:5002/api/face_recog',
+            {data:param},
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }).pipe(map((res) => {
+                return res.data.results;
+            })).subscribe( res => {
+                console.log(1111111111, res);
+                let val = res[0];
+                if(val === 1){
+                    resolve(0);
+                }else if(val === 0){
+                    resolve(-1);
+                }else{
+                    resolve(val);
+                }
+                
+            });
+        }); 
+    }
+
+    /**
+     * user login by userName without password cause face
+     *
+     * @param loginName loginName: username 
+     */
+    async faceLogin(loginName: string) {
+        const user = await this.userRepo.createQueryBuilder('user')
+            .leftJoinAndSelect('user.roles', 'roles')
+            .leftJoinAndSelect('user.organizations', 'organizations')
+            .leftJoinAndSelect('user.userInfos', 'userInfos')
+            .leftJoinAndSelect('userInfos.infoItem', 'infoItem')
+            .where('user.username = :username', { username: loginName })
+            .orWhere('user.mobile = :mobile', { mobile: loginName })
+            .orWhere('user.email = :email', { email: loginName.toLocaleLowerCase() })
+            .getOne();
+
+        await this.checkUserStatus(user);
+
+        const infoItem = await this.infoItemRepo.createQueryBuilder('infoItem')
+            .leftJoin('infoItem.infoGroups', 'infoGroups')
+            .leftJoin('infoGroups.role', 'role')
+            .leftJoin('role.users', 'users')
+            .where('users.username = :username', { username: loginName })
+            .orWhere('users.mobile = :mobile', { mobile: loginName })
+            .orWhere('users.email = :email', { email: loginName.toLocaleLowerCase() })
+            .orderBy('infoItem.order', 'ASC')
+            .getMany();
+
+        const userInfoData = this.refactorUserData(user, infoItem);
+
+        const tokenInfo = await this.authService.createToken({ loginName });
+        return { tokenInfo, userInfoData };
+    }
+
     /**
      * user login by username or email
      *
@@ -447,7 +548,7 @@ export class UserService {
      * @param createUserInput createUserInput
      */
     async register(createUserInput: CreateUserInput): Promise<void> {
-        createUserInput.roleIds = [1];
+        createUserInput.roleIds = [1]; //fixme
         await this.createUser(createUserInput);
     }
 
