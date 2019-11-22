@@ -21,11 +21,11 @@
     "@nestjs/common": "^5.5.0",
     "@nestjs/core": "^5.5.0",
     "@nestjs/microservices": "^5.5.0",
-    "grpc": "^1.17.0",
+    "grpc": "^1.24.2",
     "rxjs": "^6.3.3",
+    "snyk": "^1.161.1",
     "typeorm": "^0.2.15",
-    "typescript": "^3.2.2",
-    "snyk": "^1.161.1"
+    "typescript": "^3.2.2"
   },
   "devDependencies": {
     "@nestjs/testing": "^5.5.0",

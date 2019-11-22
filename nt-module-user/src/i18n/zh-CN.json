@@ -78,5 +78,6 @@
 	"Create punch item success": "打卡成功",
 	"Familiar with the other face": "Familiar with the other face",
 	"Please type in user name": "Please type in user name",
-	"Add face success": "Add face success"
+	"Add face success": "Add face success",
+	"Already have the same face": "Already have the same face"
 }

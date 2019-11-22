@@ -8,7 +8,7 @@ async function bootstrap() {
     const app = await NestFactory.createMicroservice(UserModule.forRoot({ i18n: 'zh-CN' }), {
         transport: Transport.GRPC,
         options: {
-            url: '0.0.0.0' + ':50051',
+            url: '0.0.0.0:50052',
             package: 'nt_module_user',
             protoPath: join(__dirname, 'protobufs/nt-module-user.proto'),
             loader: {

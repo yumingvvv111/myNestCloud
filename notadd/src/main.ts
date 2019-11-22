@@ -17,8 +17,8 @@ async function bootstrap() {
     // app.use(json({limit: 500000000}));
     // app.use(urlencoded({limit: 500000000, extended: true, parameterLimit: 1000000000}));
     app.enableCors();
-    await app.listen(5001, '0.0.0.0', () => {
-        logger.log('Notadd GraphQL IDE Server started on: http://localhost:5001/graphql');
+    await app.listen(50054, '0.0.0.0', () => {
+        logger.log('Notadd GraphQL IDE Server started on: http://localhost:50054/graphql');
     });
 }
 

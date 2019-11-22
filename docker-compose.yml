@@ -1,0 +1,89 @@
+version: '2'
+networks:
+ app_net:
+        driver: bridge
+        ipam:
+            config:
+                # 子网络
+                - subnet: 10.10.0.0/16
+services:
+#   node-rpc:
+#       networks:
+#             app_net:
+#                 # 固定子网ip，网段必须在子网络10.10.*.*
+#                 ipv4_address: 10.10.0.3
+#     #   build: ./nt-rpc-demo/
+#       image: node:10.17
+#       #node:10-alpine
+#       ports: 
+#       - "50053:50053"
+#       expose:
+#       - "50053"
+#       depends_on:
+#       - "db"
+#       volumes:
+#       - "$PWD/nt-rpc-demo:/app"
+#       networks:
+#       - app_net
+#       container_name: "node-rpc"
+#       command: sh ./app/run.sh
+  node-user:
+      container_name: node-user
+      networks:
+            app_net:
+                ipv4_address: 10.10.0.2
+      image: node:10.17
+      ports:
+      - "50052:50052"
+      expose:
+      - "50052"
+      depends_on:
+      - "db"
+      volumes:
+      # - "$PWD/nginx.conf:/etc/nginx/conf.d/nginx"
+      # - "$PWD/account-system/app/public:/usr/share/nginx/html"
+      - "./nt-module-user:/app"
+      networks:
+      - app_net
+      container_name: "node-user"
+      command: sh ./app/run.sh
+  db:
+    image: postgres:10.11
+    networks:
+            app_net:
+                ipv4_address: 10.10.0.5
+    environment:
+     - POSTGRES_DB=module_user
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=cctv7788
+     - POSTGRES_PORT=5433
+    container_name: db
+    restart: always
+    ports:
+     - "5433:5432"
+    expose:
+     - "5432"
+  node-router:
+    networks:
+        app_net:
+            ipv4_address: 10.10.0.4
+    image: node:10.17
+    ports: 
+    - "50054:50054"
+    depends_on:
+    - "node-user"
+    - "db"
+    # - "node-rpc"
+    volumes:
+    - "$PWD/notadd:/app"
+    networks:
+    - app_net
+    container_name: "node-router"
+    command: sh ./app/run.sh
+  # adminer:
+  #   networks:
+  #     - app_net
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080  

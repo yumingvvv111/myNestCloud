@@ -4,10 +4,10 @@ import { join } from 'path';
 
 @Injectable()
 export class NotaddGrpcClientFactory {
-    @Client(generateGrpcOptions('localhost:50050', 'notadd_rpc_demo', 'root.proto'))
-    public readonly rootServiceClient: ClientGrpc;
+    // @Client(generateGrpcOptions('localhost:50053', 'notadd_rpc_demo', 'root.proto'))
+    // public readonly rootServiceClient: ClientGrpc;
 
-    @Client(generateGrpcOptions('localhost:50051', 'nt_module_user', 'nt-module-user.proto'))
+    @Client(generateGrpcOptions('10.10.0.2:50052', 'nt_module_user', 'nt-module-user.proto'))
     public readonly userModuleClient: ClientGrpc;
 }
 

@@ -422,7 +422,7 @@ export class UserService {
     let param = JSON.stringify(paramData);
     
     return new Promise((resolve) => {
-        this.httpService.post('http://localhost:5002/api/add_face',
+        this.httpService.post('http://39.97.224.231:5007/api/add_face',
         {data:param},
         {
             headers: {
@@ -447,7 +447,7 @@ export class UserService {
         const param = img.replace(/^.*?,/, '');
         console.log(param);
         return new Promise((resolve) => {
-            this.httpService.post('http://localhost:5002/api/face_recog',
+            this.httpService.post('http://39.97.224.231:5007/api/face_recog',
             {data:param},
             {
                 headers: {
