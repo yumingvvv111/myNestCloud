@@ -48,7 +48,7 @@ services:
       container_name: "node-user"
       command: sh ./app/run.sh
   db:
-    image: postgres:10.11
+    image: postgres:11-alpine
     networks:
             app_net:
                 ipv4_address: 10.10.0.5
