@@ -259,6 +259,7 @@ service UserService {
   rpc GetPunchList(PunchRequest) returns (PunchResponse) {}
   rpc FaceLogin(FaceLoginRequest) returns (LoginResponse) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc Login2(LoginRequest) returns (LoginResponse2) {}
   rpc Register(RegisterRequest) returns (StringDataResponse) {}
   rpc CreateUser(CreateUserRequest) returns (StringDataResponse) {}
   rpc AddUserRole(AddOrDeleteUserRoleRequest) returns (StringDataResponse) {}
@@ -322,6 +323,15 @@ message FaceRegisterResponse {
     string status = 1;
     TokenInfo tokenInfo = 2;
     UserData userInfoData = 3;
+  }
+}
+
+message LoginResponse2 {
+  int32 code = 1;
+  string message = 2;
+  LoginResponseData data = 3;
+  message LoginResponseData {
+    string tokenInfo = 1;
   }
 }
 
@@ -444,15 +454,17 @@ message FindUserInfoByIdsResponse {
 message UserData {
   int32 id = 1;
   string username = 2;
-  string email = 3;
-  string mobile = 4;
-  bool banned = 5;
-  bool recycle = 6;
-  string createdAt = 7;
-  string updatedAt = 8;
-  repeated UserRoleData userRoles = 9;
-  repeated UserOrganizationData userOrganizations = 10;
-  repeated UserInfoData userInfos = 11;
+  string chatUserId = 3;
+  string chatAuthToken = 4;
+  string email = 5;
+  string mobile = 6;
+  bool banned = 7;
+  bool recycle = 8;
+  string createdAt = 9;
+  string updatedAt = 10;
+  repeated UserRoleData userRoles = 11;
+  repeated UserOrganizationData userOrganizations = 12;
+  repeated UserInfoData userInfos = 13;
 }
 message UserRoleData {
   int32 id = 1;

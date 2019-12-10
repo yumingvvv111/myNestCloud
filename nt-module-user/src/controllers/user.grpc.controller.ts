@@ -93,6 +93,7 @@ export class UserGrpcController {
 
     @GrpcMethod('UserService')
     async login(payload: { username: string, password: string }) {
+        console.log(111111)
         const data = await this.userService.login(payload.username, payload.password);
         return { code: 200, message: t('Login success'), data };
     }
@@ -105,7 +106,6 @@ export class UserGrpcController {
 
     @GrpcMethod('UserService')
     async register(payload: { registerUserInput: CreateUserInput }) {
-        console.log(5555555, payload);
         const result = await this.userService.register(payload.registerUserInput);
         return { code: 200, message: t('Registration success') };
     }

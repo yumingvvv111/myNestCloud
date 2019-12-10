@@ -1358,9 +1358,9 @@ export namespace nt_module_user {
         /**
          * Calls FaceRegister.
          * @param {nt_module_user.FaceRegisterRequest} request FaceRegisterRequest message or plain object
-         * @returns {Observable<nt_module_user.LoginResponse>}
+         * @returns {Observable<nt_module_user.FaceRegisterResponse>}
          */
-        faceRegister(request: nt_module_user.FaceRegisterRequest): Observable<nt_module_user.LoginResponse>;
+        faceRegister(request: nt_module_user.FaceRegisterRequest): Observable<nt_module_user.FaceRegisterResponse>;
 
         /**
          * Calls CreatePunch.
@@ -1389,6 +1389,13 @@ export namespace nt_module_user {
          * @returns {Observable<nt_module_user.LoginResponse>}
          */
         login(request: nt_module_user.LoginRequest): Observable<nt_module_user.LoginResponse>;
+
+        /**
+         * Calls Login2.
+         * @param {nt_module_user.LoginRequest} request LoginRequest message or plain object
+         * @returns {Observable<nt_module_user.LoginResponse2>}
+         */
+        login2(request: nt_module_user.LoginRequest): Observable<nt_module_user.LoginResponse2>;
 
         /**
          * Calls Register.
@@ -1667,6 +1674,104 @@ export namespace nt_module_user {
     }
 
     /**
+     * Constructs a new FaceRegisterResponse.
+     * @exports nt_module_user.FaceRegisterResponse
+     * @interface
+     */
+    export interface FaceRegisterResponse {
+
+        /**
+         * FaceRegisterResponse code.
+         * @type {number|undefined}
+         */
+        code?: number;
+
+        /**
+         * FaceRegisterResponse message.
+         * @type {string|undefined}
+         */
+        message?: string;
+
+        /**
+         * FaceRegisterResponse data.
+         * @type {nt_module_user.FaceRegisterResponse.FaceRegisterResData|undefined}
+         */
+        data?: nt_module_user.FaceRegisterResponse.FaceRegisterResData;
+    }
+
+    export namespace FaceRegisterResponse {
+
+        /**
+         * Constructs a new FaceRegisterResData.
+         * @exports nt_module_user.FaceRegisterResponse.FaceRegisterResData
+         * @interface
+         */
+        export interface FaceRegisterResData {
+
+            /**
+             * FaceRegisterResData status.
+             * @type {string|undefined}
+             */
+            status?: string;
+
+            /**
+             * FaceRegisterResData tokenInfo.
+             * @type {nt_module_user.TokenInfo|undefined}
+             */
+            tokenInfo?: nt_module_user.TokenInfo;
+
+            /**
+             * FaceRegisterResData userInfoData.
+             * @type {nt_module_user.UserData|undefined}
+             */
+            userInfoData?: nt_module_user.UserData;
+        }
+    }
+
+    /**
+     * Constructs a new LoginResponse2.
+     * @exports nt_module_user.LoginResponse2
+     * @interface
+     */
+    export interface LoginResponse2 {
+
+        /**
+         * LoginResponse2 code.
+         * @type {number|undefined}
+         */
+        code?: number;
+
+        /**
+         * LoginResponse2 message.
+         * @type {string|undefined}
+         */
+        message?: string;
+
+        /**
+         * LoginResponse2 data.
+         * @type {nt_module_user.LoginResponse2.LoginResponseData|undefined}
+         */
+        data?: nt_module_user.LoginResponse2.LoginResponseData;
+    }
+
+    export namespace LoginResponse2 {
+
+        /**
+         * Constructs a new LoginResponseData.
+         * @exports nt_module_user.LoginResponse2.LoginResponseData
+         * @interface
+         */
+        export interface LoginResponseData {
+
+            /**
+             * LoginResponseData tokenInfo.
+             * @type {string|undefined}
+             */
+            tokenInfo?: string;
+        }
+    }
+
+    /**
      * Constructs a new LoginResponse.
      * @exports nt_module_user.LoginResponse
      * @interface
@@ -1703,9 +1808,9 @@ export namespace nt_module_user {
 
             /**
              * LoginResponseData tokenInfo.
-             * @type {nt_module_user.LoginResponse.TokenInfo|undefined}
+             * @type {nt_module_user.TokenInfo|undefined}
              */
-            tokenInfo?: nt_module_user.LoginResponse.TokenInfo;
+            tokenInfo?: nt_module_user.TokenInfo;
 
             /**
              * LoginResponseData userInfoData.
@@ -1713,26 +1818,26 @@ export namespace nt_module_user {
              */
             userInfoData?: nt_module_user.UserData;
         }
+    }
+
+    /**
+     * Constructs a new TokenInfo.
+     * @exports nt_module_user.TokenInfo
+     * @interface
+     */
+    export interface TokenInfo {
 
         /**
-         * Constructs a new TokenInfo.
-         * @exports nt_module_user.LoginResponse.TokenInfo
-         * @interface
+         * TokenInfo accessToken.
+         * @type {string|undefined}
          */
-        export interface TokenInfo {
+        accessToken?: string;
 
-            /**
-             * TokenInfo accessToken.
-             * @type {string|undefined}
-             */
-            accessToken?: string;
-
-            /**
-             * TokenInfo expiresIn.
-             * @type {number|undefined}
-             */
-            expiresIn?: number;
-        }
+        /**
+         * TokenInfo expiresIn.
+         * @type {number|undefined}
+         */
+        expiresIn?: number;
     }
 
     /**
@@ -2239,6 +2344,18 @@ export namespace nt_module_user {
          * @type {string|undefined}
          */
         username?: string;
+
+        /**
+         * UserData chatUserId.
+         * @type {string|undefined}
+         */
+        chatUserId?: string;
+
+        /**
+         * UserData chatAuthToken.
+         * @type {string|undefined}
+         */
+        chatAuthToken?: string;
 
         /**
          * UserData email.

@@ -37,8 +37,8 @@ services:
       - "50052:50052"
       expose:
       - "50052"
-      # depends_on:
-      # - "db"
+      depends_on:
+      - "db"
       volumes:
       # - "$PWD/nginx.conf:/etc/nginx/conf.d/nginx"
       # - "$PWD/account-system/app/public:/usr/share/nginx/html"
@@ -46,23 +46,24 @@ services:
       networks:
       - app_net
       container_name: "node-user"
-      command: sh ./app/run.sh
-  # db:
-  #   image: postgres:10.11
-  #   networks:
-  #           app_net:
-  #               ipv4_address: 10.10.0.5
-  #   environment:
-  #    - POSTGRES_DB=module_user
-  #    - POSTGRES_USER=postgres
-  #    - POSTGRES_PASSWORD=cctv7788
-  #    - POSTGRES_PORT=5433
-  #   container_name: db
-  #   restart: always
-  #   ports:
-  #    - "5433:5432"
-  #   expose:
-  #    - "5432"
+      command: /bin/bash -c "cd /app && npm install && npm install grpc && npm run start:watch"
+      # command: sh ./app/run.sh
+  db:
+    image: postgres:10.11
+    networks:
+            app_net:
+                ipv4_address: 10.10.0.5
+    environment:
+     - POSTGRES_DB=module_user
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=cctv7788
+     - POSTGRES_PORT=5433
+    container_name: db
+    restart: always
+    ports:
+     - "5433:5432"
+    expose:
+     - "5432"
   node-router:
     networks:
         app_net:
@@ -72,14 +73,15 @@ services:
     - "50054:50054"
     depends_on:
     - "node-user"
-    # - "db"
+    - "db"
     # - "node-rpc"
     volumes:
     - "$PWD/notadd:/app"
     networks:
     - app_net
     container_name: "node-router"
-    command: sh ./app/run.sh
+    command: /bin/bash -c "cd /app && npm install && npm install grpc && npm run start:watch"
+    # command: sh ./app/run.sh
   # adminer:
   #   networks:
   #     - app_net

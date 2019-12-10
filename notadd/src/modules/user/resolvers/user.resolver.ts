@@ -29,8 +29,19 @@ export class UserResolver implements OnModuleInit {
 
     @Query('login')
     async login(@Args() args: { username: string, password: string }) {
+        console.log('=== user.resolver-login ===')
         const { code, message, data } = await this.userService.login(args).toPromise();
-        return { code, message, data: data.tokenInfo };
+        return { code, message, data: data };
+    }
+
+    @Query('login2')
+    async login2(@Args() args: { username: string, password: string }) {
+        console.log('=== user.resolver-login2 ===')
+        // let code = 200;
+        // let message = '';
+         const { code, message, data } = await this.userService.login(args).toPromise();
+        console.log(data)
+        return { code, message, data };
     }
 
     @Query('punch')

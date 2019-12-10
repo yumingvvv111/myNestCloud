@@ -1,8 +1,10 @@
 type Query {
+    """Ordinary user login2"""
+    login2(username: String!, password: String!): LoginResponse2
     """Ordinary user faceLogin"""
     faceLogin(img: String!): LoginResponse2
     """Ordinary user login"""
-    login(username: String!, password: String!): LoginResponse
+    login(username: String!, password: String!): LoginResponse2
     """Ordinary user punch"""
     punch(startTime: String!, endTime: String!): PunchResponse
     """Admin login"""
@@ -156,6 +158,10 @@ type LoginResData{
     userInfoData: UserInfoData
 }
 
+type LoginResData2{
+    tokenInfo: String
+}
+
 type TokenInfo {
     accessToken: String
     expiresIn: Int
@@ -196,6 +202,8 @@ type UsersInfoResult {
 type UserInfoData {
     userId: Int
     username: String
+    chatUserId: String
+    chatAuthToken: String
     email: String
     mobile: String
     banned: Boolean

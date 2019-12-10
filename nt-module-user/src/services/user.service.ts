@@ -412,30 +412,30 @@ export class UserService {
      * @param name user name
     */
 
-   async addAIFaceUser(img: string, name: string):Promise<any> {
+    async addAIFaceUser(img: string, name: string): Promise<any> {
 
-    let imgStr = img.replace(/^.*?,/, '');
-    let paramData = {
-        base64_11: imgStr,
-        user_name: name
-    };
-    let param = JSON.stringify(paramData);
-    
-    return new Promise((resolve) => {
-        this.httpService.post('http://39.97.224.231:5007/api/add_face',
-        {data:param},
-        {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).pipe(map((res) => {
-            return res.data.results;
-        })).subscribe( res => {
-            let val = res[0];
-            resolve(val);
+        let imgStr = img.replace(/^.*?,/, '');
+        let paramData = {
+            base64_11: imgStr,
+            user_name: name
+        };
+        let param = JSON.stringify(paramData);
+
+        return new Promise((resolve) => {
+            this.httpService.post('http://39.97.224.231:5007/api/add_face',
+                { data: param },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }).pipe(map((res) => {
+                    return res.data.results;
+                })).subscribe(res => {
+                    let val = res[0];
+                    resolve(val);
+                });
         });
-    }); 
-}
+    }
 
 
     /**
@@ -443,37 +443,37 @@ export class UserService {
      * @param img the image from APP client
     */
 
-    async getUsernameByAI(img: string):Promise<any> {
+    async getUsernameByAI(img: string): Promise<any> {
         const param = img.replace(/^.*?,/, '');
         console.log(param);
         return new Promise((resolve) => {
             this.httpService.post('http://39.97.224.231:5007/api/face_recog',
-            {data:param},
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }).pipe(map((res) => {
-                return res.data.results;
-            })).subscribe( res => {
-                console.log(1111111111, res);
-                let val = res[0];
-                if(val === 1){
-                    resolve(0);
-                }else if(val === 0){
-                    resolve(-1);
-                }else{
-                    resolve(val);
-                }
-                
-            });
-        }); 
+                { data: param },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }).pipe(map((res) => {
+                    return res.data.results;
+                })).subscribe(res => {
+                    console.log(1111111111, res);
+                    let val = res[0];
+                    if (val === 1) {
+                        resolve(0);
+                    } else if (val === 0) {
+                        resolve(-1);
+                    } else {
+                        resolve(val);
+                    }
+
+                });
+        });
     }
 
     /**
      * user login by userName without password cause face
      *
-     * @param loginName loginName: username 
+     * @param loginName loginName: username
      */
     async faceLogin(loginName: string) {
         const user = await this.userRepo.createQueryBuilder('user')
@@ -503,6 +503,49 @@ export class UserService {
         const tokenInfo = await this.authService.createToken({ loginName });
         return { tokenInfo, userInfoData };
     }
+
+
+    /**
+     * login chat
+     * @param user username
+     * @param password password
+     *
+    */
+
+    async loginChat(user: string, password: string): Promise<any> {
+
+        console.log(user, password);
+        return new Promise((resolve) => {
+            try {
+                this.httpService.post('http://yumingvvv.thanks.echosite.cn/api/v1/login',
+                    { user, password },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    }).pipe(map((res: any) => {
+                        console.log('===loginChat-pip===');
+                        if (res.data.status == 'success') {
+                            return {
+                                chatUserId: res.data.data.userId,
+                                chatAuthToken: res.data.data.authToken,
+                            }
+                        } else {
+                            return {
+                                chatUserId: '',
+                                chatAuthToken: ''
+                            }
+                        }
+                    })).subscribe(res => {
+                        console.log('===loginChat-subscribe===');
+                        resolve(res);
+                    });
+            } catch (ex) {
+                console.log('=== loginChat ===');
+            }
+        });
+    }
+
 
     /**
      * user login by username or email
@@ -537,10 +580,25 @@ export class UserService {
             .getMany();
 
         const userInfoData = this.refactorUserData(user, infoItem);
-
         const tokenInfo = await this.authService.createToken({ loginName });
-        return { tokenInfo, userInfoData };
+
+        //this.loginChat(loginName, password);
+        //fixme
+        //ymd
+        let chatUserId, chatAuthToken;
+        try {
+            console.log('===services-login-chat===');
+            //fixme
+            let loginChatRes = await this.loginChat('user2', 'cctv1122');
+            chatUserId = loginChatRes.chatUserId;
+            chatAuthToken = loginChatRes.chatAuthToken;
+        } catch (ex) {
+            console.error(ex);
+        }
+
+        return { tokenInfo, userInfoData: { ...userInfoData, ...tokenInfo, chatUserId, chatAuthToken } };
     }
+
 
     /**
      * Ordinary user registration
