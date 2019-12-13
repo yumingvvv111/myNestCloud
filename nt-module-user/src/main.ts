@@ -1,7 +1,7 @@
 import { Transport } from '@nestjs/common/enums/transport.enum';
 import { NestFactory } from '@nestjs/core';
 import { join } from 'path';
-
+import { APP_CONFIG } from './configurations/app.config';
 import { UserModule } from './user.module';
 
 async function bootstrap() {

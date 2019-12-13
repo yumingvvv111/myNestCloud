@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { map, filter, scan } from 'rxjs/operators';
 import { __ as t } from 'i18n';
 import { Repository } from 'typeorm';
-
+import { APP_CONFIG } from '../configurations/app.config';
 import { InfoItem } from '../entities/info-item.entity';
 import { Permission } from '../entities/permission.entity';
 import { PersonalPermission } from '../entities/personal-permission.entity';
@@ -22,6 +22,8 @@ import {
 import { CryptoUtil } from '../utils/crypto.util';
 import { AuthService } from './auth.service';
 import { RoleService } from './role.service';
+
+let SERVICE = APP_CONFIG.SERVICE;
 
 @Injectable()
 export class UserService {
@@ -71,9 +73,28 @@ export class UserService {
         if (createUserInput.infoKVs && createUserInput.infoKVs.length) {
             await this.createOrUpdateUserInfos(user, createUserInput.infoKVs, 'create');
         }
+        this.createChatUser(createUserInput.username, createUserInput.password);
     }
 
 
+    /***
+     * Create the chat user
+     * @param user 
+     * 
+    */
+  createChatUser(user, pass){
+        this.httpService.post(`http://${SERVICE.CHAT_SERVER}/api/v1/users.register`,
+        {"username":user,"email": user + "@q.com","pass":pass,"name":user},
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }).pipe(map((res) => {
+                return res.data.results;
+            })).subscribe(res => {
+               console.log(res);
+            });
+   }
 
 
     /**
@@ -422,7 +443,7 @@ export class UserService {
         let param = JSON.stringify(paramData);
 
         return new Promise((resolve) => {
-            this.httpService.post('http://39.97.224.231:5007/api/add_face',
+            this.httpService.post(`http://${SERVICE.REST_SERVER}/api/add_face`,
                 { data: param },
                 {
                     headers: {
@@ -447,7 +468,7 @@ export class UserService {
         const param = img.replace(/^.*?,/, '');
         console.log(param);
         return new Promise((resolve) => {
-            this.httpService.post('http://39.97.224.231:5007/api/face_recog',
+            this.httpService.post(`http://${SERVICE.REST_SERVER}/api/face_recog`,
                 { data: param },
                 {
                     headers: {
@@ -517,7 +538,7 @@ export class UserService {
         console.log(user, password);
         return new Promise((resolve) => {
             try {
-                this.httpService.post('http://yumingvvv.thanks.echosite.cn/api/v1/login',
+                this.httpService.post(`http://${SERVICE.REST_SERVER}/api/v1/login`,
                     { user, password },
                     {
                         headers: {
@@ -582,14 +603,11 @@ export class UserService {
         const userInfoData = this.refactorUserData(user, infoItem);
         const tokenInfo = await this.authService.createToken({ loginName });
 
-        //this.loginChat(loginName, password);
-        //fixme
-        //ymd
         let chatUserId, chatAuthToken;
         try {
             console.log('===services-login-chat===');
             //fixme
-            let loginChatRes = await this.loginChat('user2', 'cctv1122');
+            let loginChatRes = await this.loginChat('user2', 'cctv1122');//(loginName, password);
             chatUserId = loginChatRes.chatUserId;
             chatAuthToken = loginChatRes.chatAuthToken;
         } catch (ex) {
@@ -606,7 +624,7 @@ export class UserService {
      * @param createUserInput createUserInput
      */
     async register(createUserInput: CreateUserInput): Promise<void> {
-        createUserInput.roleIds = [1]; //fixme
+        createUserInput.roleIds = [1]; 
         await this.createUser(createUserInput);
     }
 

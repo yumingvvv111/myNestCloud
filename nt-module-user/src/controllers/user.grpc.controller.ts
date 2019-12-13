@@ -93,7 +93,6 @@ export class UserGrpcController {
 
     @GrpcMethod('UserService')
     async login(payload: { username: string, password: string }) {
-        console.log(111111)
         const data = await this.userService.login(payload.username, payload.password);
         return { code: 200, message: t('Login success'), data };
     }
