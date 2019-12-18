@@ -1379,9 +1379,9 @@ export namespace nt_module_user {
         /**
          * Calls FaceLogin.
          * @param {nt_module_user.FaceLoginRequest} request FaceLoginRequest message or plain object
-         * @returns {Observable<nt_module_user.LoginResponse>}
+         * @returns {Observable<nt_module_user.LoginResponse2>}
          */
-        faceLogin(request: nt_module_user.FaceLoginRequest): Observable<nt_module_user.LoginResponse>;
+        faceLogin(request: nt_module_user.FaceLoginRequest): Observable<nt_module_user.LoginResponse2>;
 
         /**
          * Calls Login.

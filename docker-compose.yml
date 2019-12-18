@@ -29,6 +29,7 @@ services:
 #       command: sh ./app/run.sh
   node-user:
       container_name: node-user
+      restart: always
       networks:
             app_net:
                 ipv4_address: 10.10.0.2
@@ -68,6 +69,7 @@ services:
         app_net:
             ipv4_address: 10.10.0.4
     image: node:10.17
+    restart: always
     ports: 
     - "50054:50054"
     depends_on:

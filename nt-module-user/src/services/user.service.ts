@@ -443,7 +443,7 @@ export class UserService {
         let param = JSON.stringify(paramData);
 
         return new Promise((resolve) => {
-            this.httpService.post(`http://${SERVICE.REST_SERVER}/api/add_face`,
+            this.httpService.post(`http://${SERVICE.AI_SERVER}/api/add_face`,
                 { data: param },
                 {
                     headers: {
@@ -466,9 +466,9 @@ export class UserService {
 
     async getUsernameByAI(img: string): Promise<any> {
         const param = img.replace(/^.*?,/, '');
-        console.log(param);
-        return new Promise((resolve) => {
-            this.httpService.post(`http://${SERVICE.REST_SERVER}/api/face_recog`,
+        // console.log(param);
+        return new Promise((resolve) => {//ymd
+            this.httpService.post(`http://${SERVICE.AI_SERVER}/api/face_recog`,
                 { data: param },
                 {
                     headers: {
@@ -477,7 +477,6 @@ export class UserService {
                 }).pipe(map((res) => {
                     return res.data.results;
                 })).subscribe(res => {
-                    console.log(1111111111, res);
                     let val = res[0];
                     if (val === 1) {
                         resolve(0);
@@ -522,7 +521,19 @@ export class UserService {
         const userInfoData = this.refactorUserData(user, infoItem);
 
         const tokenInfo = await this.authService.createToken({ loginName });
-        return { tokenInfo, userInfoData };
+
+        let chatUserId, chatAuthToken;
+        try {
+            console.log('===services-login-chat===');
+            //fixme
+            let loginChatRes = await this.loginChat('user2', 'cctv1122');//(loginName, password);
+            chatUserId = loginChatRes.chatUserId;
+            chatAuthToken = loginChatRes.chatAuthToken;
+        } catch (ex) {
+            console.error(ex);
+        }
+
+        return { tokenInfo, userInfoData: { ...userInfoData, ...tokenInfo, chatUserId, chatAuthToken } };
     }
 
 
@@ -538,7 +549,7 @@ export class UserService {
         console.log(user, password);
         return new Promise((resolve) => {
             try {
-                this.httpService.post(`http://${SERVICE.REST_SERVER}/api/v1/login`,
+                this.httpService.post(`http://${SERVICE.CHAT_SERVER}/api/v1/login`,
                     { user, password },
                     {
                         headers: {
