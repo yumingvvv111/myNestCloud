@@ -23,7 +23,7 @@
     "@nestjs/microservices": "^5.5.0",
     "grpc": "^1.24.2",
     "rxjs": "^6.3.3",
-    "snyk": "^1.161.1",
+    "snyk": "^1.996.0",
     "typeorm": "^0.2.15",
     "typescript": "^3.2.2"
   },
